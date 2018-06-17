@@ -58,7 +58,8 @@ def calculate_price(sku_item, qty, rule_values, skus, special):
         quotient = qty / rule_qty
         # remainder calculate price with normal prices
         remainder = qty % rule_qty
-        result += quotient * rule_price # special price
+        if isinstance(rule_price, (int, long)):
+            result += quotient * rule_price # special price
         if str(rule_price) in skus:
             result -= PRICES.get(rule_price, 0)
 
