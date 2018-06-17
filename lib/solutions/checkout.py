@@ -40,9 +40,11 @@ def group_count_skus(skus):
     return Counter(skus)
 
 
-def calculate_price(sku_item, qty, rule_values):
+def calculate_price(sku_item, qty, rule_values, special):
     result = 0
-    if qty and rule_values:
+    if not sku_item and not qty and not rule_values:
+        return None
+    if special:
         # quotient calculate price with specials if quotient > 1
         quotient = qty / rule_values[0]
         # remainder calculate price with normal prices
@@ -50,7 +52,9 @@ def calculate_price(sku_item, qty, rule_values):
         result += quotient * rule_values[1] # special price
         result += remainder * PRICES.get(sku_item, None)
         return result
-    return None
+    else:
+        result += qty * PRICES.get(sku_item, None)
+        return result
 
 
 def checkout(skus, case_sensitive_sku = False):
@@ -63,13 +67,16 @@ def checkout(skus, case_sensitive_sku = False):
         for sku_item, qty in skus_dict.items():
             rule_values = RULES.get(sku_item, None)
             if rule_values:
-                result = calculate_price(sku_item, qty, rule_values)
+                result = calculate_price(sku_item, qty, rule_values, special=True)
                 final_result += result
+            else:
+                result = calculate
         return final_result
     else:
         return -1
 
 if __name__ == '__main__':
+    print("Expected: 20, got: {}".format(checkout("C")))
     print("Expected: 175, got: {}".format(checkout("aaabb")))
     print("Expected: 175, got: {}".format(checkout("AAABB")))
     print("Expected: 130, got: {}".format(checkout("AAA")))
