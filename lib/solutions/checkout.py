@@ -71,9 +71,10 @@ def calculate_price(sku_item, rule_values, skus, skus_dict, special):
                         f_quotient = free_item_qty / rule_qty
                         f_remainder = free_item_qty % rule_qty
                         free_item_disc_price = RULES.get(rule_price, 0)[0][1]
-                        sub_q = f_quotient * free_item_disc_price / rule_qty
+                        sub_q = f_quotient * free_item_disc_price
                         sub_r = f_remainder * PRICES.get(rule_price, 0)
                         result -= (sub_q + sub_r)
+                        # sku_item_qty = 0
                     result += sku_item_qty * PRICES.get(sku_item, 0)
                     # sku_item_qty = sku_item_qty - rule_qty
                     sku_item_qty = 0
