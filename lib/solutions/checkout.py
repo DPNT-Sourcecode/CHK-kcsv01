@@ -40,12 +40,35 @@ def group_count_skus(skus):
     return Counter(skus)
 
 
+def calculate_price(sku_item, qty, rule_values):
+    result = 0
+    if qty and rule_values:
+        # quotient calculate price with specials if quotient > 1
+        quotient = qty / rule_values[0]
+        # remainder calculate price with normal prices
+        remainder = qty % rule_values[0]
+        result += quotient * rule_values[1] # special price
+        result += remainder * PRICES.get(sku_item, None)
+        return result
+    return None
+
+
 def checkout(skus):
+    final_result = 0
+
     if skus_is_valid(skus):
         skus_dict = group_count_skus(skus)
         for sku_item, qty in skus_dict.items():
             rule_values = RULES.get(sku_item, None)
-
+            if rule_values:
+                result = calculate_price(sku_item, qty, rule_values)
+                final_result += result
+        return final_result
+    else:
+        return -1
 
 if __name__ == '__main__':
     print("Expected: 175, got: {}".format(checkout("AAABB")))
+    print("Expected: 130, got: {}".format(checkout("AAA")))
+    print("Expected: 45, got: {}".format(checkout("BB")))
+    print("Expected: -1, got: {}".format(checkout("fBB")))
