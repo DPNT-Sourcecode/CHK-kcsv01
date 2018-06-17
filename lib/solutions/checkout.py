@@ -53,8 +53,10 @@ def calculate_price(sku_item, qty, rule_values):
     return None
 
 
-def checkout(skus):
+def checkout(skus, case_sensitive_sku = False):
     final_result = 0
+    if not case_sensitive_sku:
+        skus = skus.upper()
 
     if skus_is_valid(skus):
         skus_dict = group_count_skus(skus)
