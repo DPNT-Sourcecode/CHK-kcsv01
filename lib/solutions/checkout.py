@@ -47,7 +47,7 @@ def group_count_skus(skus):
 
 
 
-def calculate_price(sku_item, qty, rule_values, skus, special):
+def calculate_price(sku_item, qty, rule_values, skus, skus_dict, special):
     if not sku_item and not qty and not rule_values:
         return None
     result = 0
@@ -63,7 +63,10 @@ def calculate_price(sku_item, qty, rule_values, skus, special):
             result += remainder * PRICES.get(sku_item, 0)
         else:
             if str(rule_price) in skus:
-                result -= PRICES.get(rule_price, 0)
+                # only apply free item subtraction if there is enough qty in skus
+                free_item_qty = skus_dict.get(rule_price, 0)
+                sub = min(quotient, free_item_qty) * PRICES.get(rule_price, 0)
+                result -= sub
             result += qty * PRICES.get(sku_item, 0)
 
         return result
@@ -83,10 +86,10 @@ def checkout(skus, case_sensitive_sku = True):
         for sku_item, qty in skus_dict.items():
             rule_values = RULES.get(sku_item, None)
             if rule_values:
-                result = calculate_price(sku_item, qty, rule_values, skus, special=True,)
+                result = calculate_price(sku_item, qty, rule_values, skus, skus_dict, special=True,)
                 final_result += result
             else:
-                result = calculate_price(sku_item, qty, rule_values, skus, special=False)
+                result = calculate_price(sku_item, qty, rule_values, skus, skus_dict, special=False)
                 final_result += result
         return final_result
     else:
