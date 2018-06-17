@@ -69,7 +69,8 @@ def calculate_price(sku_item, rule_values, skus, skus_dict, final_result, specia
                         # only apply free item subtraction if there is enough qty in skus
                         free_item_qty = skus_dict.get(rule_price, 0)
                         f_quotient = free_item_qty / rule_qty
-                        f_remainder = rule_qty - (f_quotient * free_item_qty)
+                        rule_sku_qty = skus_dict.get(sku_item, 0)
+                        f_remainder = free_item_qty - (f_quotient * rule_qty)
                         free_item_disc_price = RULES.get(rule_price, 0)[0][1]
                         sub_q = f_quotient * free_item_disc_price
                         sub_r = f_remainder * PRICES.get(rule_price, 0)
