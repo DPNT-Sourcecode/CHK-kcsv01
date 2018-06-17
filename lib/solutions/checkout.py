@@ -57,12 +57,13 @@ def calculate_price(sku_item, rule_values, skus, skus_dict, special):
     if special:
         for rule in rule_values:
             rule_qty = rule[0]
-            rule_price = rule[1]
             if sku_item_qty >= rule_qty:
+                rule_price = rule[1]
                 if isinstance(rule_price, (int, long)):
                     quotient = sku_item_qty / rule_qty
                     # remainder = sku_item_qty % rule_qty
                     result += quotient * rule_price # special price
+                    sku_item_qty = sku_item_qty - rule_qty
                 else:
                     if str(rule_price) in skus:
                         # only apply free item subtraction if there is enough qty in skus
@@ -101,8 +102,8 @@ def checkout(skus, case_sensitive_sku = True):
 
 
 if __name__ == '__main__':
-    print("Expected: 200, got: {}".format(checkout("AAAAA")))
-    print("Expected: 250, got: {}".format(checkout("AAAAAA")))
+    # print("Expected: 200, got: {}".format(checkout("AAAAA")))
+    # print("Expected: 250, got: {}".format(checkout("AAAAAA")))
     print("Expected: 310, got: {}".format(checkout("AAAAAAA")))
     print("Expected: 290, got: {}".format(checkout("AAAEEEEB")))
     print("Expected: 265, got: {}".format(checkout("AAAEEEBB")))
