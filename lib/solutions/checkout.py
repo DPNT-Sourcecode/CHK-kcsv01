@@ -10,6 +10,7 @@
 # | D    | 15    |                        |
 # | E    | 40    | 2E get one B free      |
 # +------+-------+------------------------+
+
 from collections import Counter
 
 PRICES = {
