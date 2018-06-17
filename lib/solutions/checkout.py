@@ -50,7 +50,7 @@ def group_count_skus(skus):
 
 def calculate_price(sku_item, rule_values, skus, skus_dict, special):
     if not sku_item and not rule_values:
-        return None
+        return 0
     result = 0
     sku_item_qty = skus_dict.get(sku_item)
     sku_item_price = PRICES.get(sku_item)
@@ -70,7 +70,7 @@ def calculate_price(sku_item, rule_values, skus, skus_dict, special):
                         sub = min(sku_item_qty, free_item_qty) * PRICES.get(rule_price, 0)
                         result -= sub
                     result += sku_item_qty * PRICES.get(sku_item, 0)
-                skus_dict[sku_item] = sku_item_qty - rule_qty
+                    sku_item_qty = sku_item_qty - rule_qty
             else:
                 result += sku_item_qty * sku_item_price
                 return result
