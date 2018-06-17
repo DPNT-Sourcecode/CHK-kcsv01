@@ -72,9 +72,9 @@ def calculate_price(sku_item, rule_values, skus, skus_dict, special):
                         result -= sub
                     result += sku_item_qty * PRICES.get(sku_item, 0)
                     sku_item_qty = sku_item_qty - rule_qty
-            else:
-                result += sku_item_qty * sku_item_price
-                return result
+        else:
+            result += sku_item_qty * sku_item_price
+            return result
     else:
         result += sku_item_qty * PRICES.get(sku_item, 0)
         return result
@@ -104,7 +104,7 @@ def checkout(skus, case_sensitive_sku = True):
 if __name__ == '__main__':
     # print("Expected: 200, got: {}".format(checkout("AAAAA")))
     # print("Expected: 250, got: {}".format(checkout("AAAAAA")))
-    print("Expected: 310, got: {}".format(checkout("AAAAAAA")))
+    # print("Expected: 300, got: {}".format(checkout("AAAAAAA")))
     print("Expected: 290, got: {}".format(checkout("AAAEEEEB")))
     print("Expected: 265, got: {}".format(checkout("AAAEEEBB")))
     print("Expected: 210, got: {}".format(checkout("AAAEE")))
