@@ -68,6 +68,7 @@ def checkout(skus):
         return -1
 
 if __name__ == '__main__':
+    print("Expected: 175, got: {}".format(checkout("aaabb")))
     print("Expected: 175, got: {}".format(checkout("AAABB")))
     print("Expected: 130, got: {}".format(checkout("AAA")))
     print("Expected: 45, got: {}".format(checkout("BB")))
