@@ -59,7 +59,7 @@ def calculate_price(sku_item, qty, rule_values, skus, special):
         # remainder calculate price with normal prices
         remainder = qty % rule_qty
         result += quotient * rule_price # special price
-        if rule_price in skus:
+        if str(rule_price) in skus:
             result -= PRICES.get(rule_price, 0)
 
         result += remainder * PRICES.get(sku_item, 0)
@@ -91,6 +91,7 @@ def checkout(skus, case_sensitive_sku = True):
 
 
 if __name__ == '__main__':
+    print("Expected: 210, got: {}".format(checkout("AAABEE")))
     print("Expected: -1, got: {}".format(checkout("ABCa")))
     print("Expected: 210, got: {}".format(checkout("AAABBCD")))
     print("Expected: 20, got: {}".format(checkout("C")))
