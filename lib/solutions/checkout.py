@@ -57,7 +57,7 @@ def calculate_price(sku_item, qty, rule_values, special):
         return result
 
 
-def checkout(skus, case_sensitive_sku = False):
+def checkout(skus, case_sensitive_sku = True):
     """ Calculates skus price with special rules. Considers case sensitivity."""
     final_result = 0
     if not case_sensitive_sku:
@@ -78,6 +78,7 @@ def checkout(skus, case_sensitive_sku = False):
         return -1
 
 if __name__ == '__main__':
+    print("Expected: -1, got: {}".format(checkout("ABCa")))
     print("Expected: 210, got: {}".format(checkout("AAABBCD")))
     print("Expected: 20, got: {}".format(checkout("C")))
     print("Expected: 15, got: {}".format(checkout("D")))
