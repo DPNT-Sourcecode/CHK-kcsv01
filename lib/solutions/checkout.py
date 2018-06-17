@@ -70,13 +70,16 @@ def checkout(skus, case_sensitive_sku = False):
                 result = calculate_price(sku_item, qty, rule_values, special=True)
                 final_result += result
             else:
-                result = calculate
+                result = calculate_price(sku_item, qty, rule_values, special=False)
+                final_result += result
         return final_result
     else:
         return -1
 
 if __name__ == '__main__':
+    print("Expected: 210, got: {}".format(checkout("AAABBCD")))
     print("Expected: 20, got: {}".format(checkout("C")))
+    print("Expected: 15, got: {}".format(checkout("D")))
     print("Expected: 175, got: {}".format(checkout("aaabb")))
     print("Expected: 175, got: {}".format(checkout("AAABB")))
     print("Expected: 130, got: {}".format(checkout("AAA")))
