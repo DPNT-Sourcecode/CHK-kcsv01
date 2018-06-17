@@ -97,8 +97,8 @@ def checkout(skus, case_sensitive_sku = True):
 
 
 if __name__ == '__main__':
+    print("Expected: 250, got: {}".format(checkout("AAAEEEEB")))
     print("Expected: 265, got: {}".format(checkout("AAAEEEBB")))
-    print("Expected: 235, got: {}".format(checkout("AAAEEEEBB")))
     print("Expected: 210, got: {}".format(checkout("AAAEE")))
     print("Expected: 250, got: {}".format(checkout("AAAEEE")))
     print("Expected: 250, got: {}".format(checkout("AAAEEEB")))
