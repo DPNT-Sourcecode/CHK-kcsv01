@@ -48,11 +48,11 @@ def group_count_skus(skus):
 
 
 def calculate_price(sku_item, qty, rule_values, skus, special):
+    if not sku_item and not qty and not rule_values:
+        return None
     result = 0
     rule_qty = rule_values[0]
     rule_price = rule_values[1]
-    if not sku_item and not qty and not rule_values:
-        return None
     if special:
         # quotient calculate price with specials if quotient > 1
         quotient = qty / rule_qty
@@ -93,7 +93,7 @@ def checkout(skus, case_sensitive_sku = True):
 
 
 if __name__ == '__main__':
-    print("Expected: 210, got: {}".format(checkout("AAABEE")))
+    # print("Expected: 210, got: {}".format(checkout("AAABEE")))
     print("Expected: -1, got: {}".format(checkout("ABCa")))
     print("Expected: 210, got: {}".format(checkout("AAABBCD")))
     print("Expected: 20, got: {}".format(checkout("C")))
