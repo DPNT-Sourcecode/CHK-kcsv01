@@ -58,6 +58,7 @@ def calculate_price(sku_item, qty, rule_values, special):
 
 
 def checkout(skus, case_sensitive_sku = False):
+    """ Calculates skus price with special rules. Considers case sensitivity."""
     final_result = 0
     if not case_sensitive_sku:
         skus = skus.upper()
