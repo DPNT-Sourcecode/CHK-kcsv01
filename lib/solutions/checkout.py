@@ -53,14 +53,16 @@ def calculate_price(sku_item, rule_values, skus, skus_dict, special):
         return None
     result = 0
     sku_item_qty = skus_dict.get(sku_item)
+    sku_item_price = PRICES.get(sku_item)
     if special:
         for rule in rule_values:
             rule_qty = rule[0]
             rule_price = rule[1]
             if sku_item_qty >= rule_qty:
-                skus_dict[sku_item] = sku_item_qty - rule_qty
                 if isinstance(rule_price, (int, long)):
-                    result += rule_qty * rule_price # special price
+                    quotient = sku_item_qty / rule_qty
+                    # remainder = sku_item_qty % rule_qty
+                    result += quotient * rule_price # special price
                 else:
                     if str(rule_price) in skus:
                         # only apply free item subtraction if there is enough qty in skus
@@ -68,7 +70,9 @@ def calculate_price(sku_item, rule_values, skus, skus_dict, special):
                         sub = min(sku_item_qty, free_item_qty) * PRICES.get(rule_price, 0)
                         result -= sub
                     result += sku_item_qty * PRICES.get(sku_item, 0)
-        
+                skus_dict[sku_item] = sku_item_qty - rule_qty
+            else:
+                result += sku_item_qty * sku_item_price
                 return result
     else:
         result += sku_item_qty * PRICES.get(sku_item, 0)
