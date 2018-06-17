@@ -43,20 +43,29 @@ def group_count_skus(skus):
     return Counter(skus)
 
 
-def calculate_price(sku_item, qty, rule_values, special):
+# def check_free_item(sku_item, qty, rule_values):
+
+
+
+def calculate_price(sku_item, qty, rule_values, skus, special):
     result = 0
+    rule_qty = rule_values[0]
+    rule_price = rule_values[1]
     if not sku_item and not qty and not rule_values:
         return None
     if special:
         # quotient calculate price with specials if quotient > 1
-        quotient = qty / rule_values[0]
+        quotient = qty / rule_qty
         # remainder calculate price with normal prices
-        remainder = qty % rule_values[0]
-        result += quotient * rule_values[1] # special price
-        result += remainder * PRICES.get(sku_item, None)
+        remainder = qty % rule_qty
+        result += quotient * rule_price # special price
+        if rule_price in skus:
+            result -= PRICES.get(rule_price, 0)
+
+        result += remainder * PRICES.get(sku_item, 0)
         return result
     else:
-        result += qty * PRICES.get(sku_item, None)
+        result += qty * PRICES.get(sku_item, 0)
         return result
 
 
@@ -71,14 +80,15 @@ def checkout(skus, case_sensitive_sku = True):
         for sku_item, qty in skus_dict.items():
             rule_values = RULES.get(sku_item, None)
             if rule_values:
-                result = calculate_price(sku_item, qty, rule_values, special=True)
+                result = calculate_price(sku_item, qty, rule_values, skus, special=True,)
                 final_result += result
             else:
-                result = calculate_price(sku_item, qty, rule_values, special=False)
+                result = calculate_price(sku_item, qty, rule_values, skus, special=False)
                 final_result += result
         return final_result
     else:
         return -1
+
 
 if __name__ == '__main__':
     print("Expected: -1, got: {}".format(checkout("ABCa")))
